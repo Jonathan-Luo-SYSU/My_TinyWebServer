@@ -13,11 +13,33 @@ class WebServer{
         WebServer();
         ~WebServer();
 
+        void init(int port , std::string user, std::string passWord, std::string databaseName,
+            int log_write , int opt_linger, int trigmode, int sql_num,
+            int thread_num, int close_log, int actor_model);
+
         void event_process();
 
-    private:
-        int i;
+    public:
+        // 基础
+        int m_port;
+        int m_close_log;
+        int m_actor_model;
+        int m_actormodel;
+        
+        // 数据库相关
+        std::string m_user;
+        std::string m_passWord;
+        std::string m_databaseName;
+        int m_sql_num;
 
-};
+        // 线程池相关
+        int m_thread_num;
+
+        // epoll_event相关
+        int m_log_write;
+        int m_OPT_LINGER;
+        int m_TRIGMode;
+
+    };
 
 #endif

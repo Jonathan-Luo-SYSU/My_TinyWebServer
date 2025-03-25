@@ -10,6 +10,22 @@ WebServer::~WebServer()
     // 释放资源
 }
 
+void WebServer::init(int port , std::string user, std::string passWord, std::string databaseName,
+            int log_write , int opt_linger, int trigmode, int sql_num,
+            int thread_num, int close_log, int actor_model)
+{
+    m_port = port;
+    m_user = user;
+    m_passWord = passWord;
+    m_databaseName = databaseName;
+    m_sql_num = sql_num;
+    m_thread_num = thread_num;
+    m_log_write = log_write;
+    m_OPT_LINGER = opt_linger;
+    m_TRIGMode = trigmode;
+    m_close_log = close_log;
+    m_actormodel = actor_model;
+}
 void WebServer::event_process(){
     int m_listenfd = socket(AF_INET, SOCK_STREAM, 0);
     assert(m_listenfd >= 0);
@@ -17,7 +33,8 @@ void WebServer::event_process(){
     struct sockaddr_in address;
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = htons(INADDR_ANY);
-    address.sin_port = htons(8080);
+    std::cout << m_port << std::endl;
+    address.sin_port = htons(m_port);
 
     int ret;
     ret = bind(m_listenfd, (struct sockaddr *)&address, sizeof(address));
@@ -25,7 +42,7 @@ void WebServer::event_process(){
 
     ret = listen(m_listenfd, 5);
     assert(ret >= 0);
-    printf("Server started on port 8080\n");
+    printf("Server started on port %d\n", m_port);
 
     while(true){
         int new_socket;
