@@ -17,7 +17,10 @@ class WebServer{
             int log_write , int opt_linger, int trigmode, int sql_num,
             int thread_num, int close_log, int actor_model);
 
-        void event_process();
+        void eventListen();
+
+        void eventLoop();
+
 
     public:
         // 基础
@@ -25,7 +28,7 @@ class WebServer{
         int m_close_log;
         int m_actor_model;
         int m_actormodel;
-        
+
         // 数据库相关
         std::string m_user;
         std::string m_passWord;
@@ -39,6 +42,9 @@ class WebServer{
         int m_log_write;
         int m_OPT_LINGER;
         int m_TRIGMode;
+
+        int m_listenfd;
+
 
     };
 

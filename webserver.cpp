@@ -26,22 +26,33 @@ void WebServer::init(int port , std::string user, std::string passWord, std::str
     m_close_log = close_log;
     m_actormodel = actor_model;
 }
-void WebServer::event_process(){
-    int m_listenfd = socket(AF_INET, SOCK_STREAM, 0);
+
+
+void WebServer::eventListen(){
+    //网络编程基础步骤
+    m_listenfd = socket(AF_INET, SOCK_STREAM, 0);
     assert(m_listenfd >= 0);
 
+    int ret = 0;
     struct sockaddr_in address;
+    bzero(&address, sizeof(address));// 清空sockaddr_in结构体
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = htons(INADDR_ANY);
-    std::cout << m_port << std::endl;
     address.sin_port = htons(m_port);
 
-    int ret;
     ret = bind(m_listenfd, (struct sockaddr *)&address, sizeof(address));
     assert(ret >= 0);
 
     ret = listen(m_listenfd, 5);
     assert(ret >= 0);
+
+    // int flag = 1;
+    // setsockopt(m_listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));// 允许服务器在关闭后立即重新绑定到同一地址和端口，而不需要等待系统释放端口资源
+
+}
+
+
+void WebServer::eventLoop(){
     printf("Server started on port %d\n", m_port);
 
     while(true){

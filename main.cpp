@@ -11,14 +11,20 @@ int main(int argc, char* argv[]) {
     Config config;
     config.parse_arg(argc, argv);
 
-    WebServer webserver;
+    WebServer server;
 
     // 初始化
-    webserver.init(config.PORT, user, passwd, databasename, config.LOGWrite, 
+    server.init(config.PORT, user, passwd, databasename, config.LOGWrite, 
         config.OPT_LINGER, config.TRIGMode,  config.sql_num,  config.thread_num, 
         config.close_log, config.actor_model);
 
-    webserver.event_process();
+    // webserver.event_process();
+
+    //监听
+    server.eventListen();
+
+    //运行
+    server.eventLoop();
     
     return 0;
 }
